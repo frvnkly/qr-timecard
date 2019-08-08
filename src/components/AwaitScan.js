@@ -1,6 +1,11 @@
 import React from 'react';
+import keyscanner from 'keyscanner';
 
 const AwaitScan = () => {
+  const keyScanHandler = new keyscanner(barcodeValue => {
+    console.log(barcodeValue);
+  });
+
   return (
     <section class='hero is-fullheight'>
       <div class='hero-body'>
