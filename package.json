@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@rescripts/cli": "0.0.11",
+    "@rescripts/rescript-env": "0.0.10",
     "bulma": "^0.7.5",
     "keyscanner": "^1.1.3",
     "react": "^16.8.6",
@@ -10,11 +12,11 @@
     "react-scripts": "3.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "rescripts start",
+    "build": "rescripts build",
+    "test": "rescripts test",
     "eject": "react-scripts eject",
-    "electron-dev": "concurrently \"cross-env BROWSER=none npm run start\" \"wait-on http://localhost:3000 && electron .\""
+    "dev": "concurrently \"cross-env BROWSER=none npm run start\" \"wait-on http://localhost:3000 && electron .\""
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -39,5 +41,8 @@
     "electron-is-dev": "^1.1.0",
     "wait-on": "^3.3.0"
   },
-  "main": "public/electron.js"
+  "main": "public/electron.js",
+  "rescripts": [
+    "env"
+  ]
 }

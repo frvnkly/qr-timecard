@@ -7,13 +7,13 @@ const AwaitScan = () => {
   });
 
   return (
-    <section class='hero is-fullheight'>
-      <div class='hero-body'>
-        <div class='container'>
-          <h1 class='title'>
+    <section className='hero is-fullheight'>
+      <div className='hero-body'>
+        <div className='container'>
+          <h1 className='title'>
             Time and Attendance System
           </h1>
-          <h2 class='subtitle'>
+          <h2 className='subtitle'>
             Scan your QR code to clock in or out.
           </h2>
         </div>
