@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import keyscanner from 'keyscanner';
 
 const AwaitScan = () => {
-  const keyScanHandler = new keyscanner(barcodeValue => {
-    console.log(barcodeValue);
-  });
+  useEffect(
+    () => {
+      const keyScanHandler = new keyscanner(qrValue => {
+        console.log(qrValue);
+      });
+
+      return function cleanup() {
+        keyScanHandler.stop()
+      };
+    }
+  );
 
   return (
     <section className='hero is-fullheight'>
@@ -19,7 +27,7 @@ const AwaitScan = () => {
         </div>
       </div>
     </section>
-  )
+  );
 };
 
 export default AwaitScan;
