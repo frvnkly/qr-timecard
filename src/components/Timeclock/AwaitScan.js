@@ -1,13 +1,19 @@
 import React, { useEffect } from 'react';
 import keyscanner from 'keyscanner';
 
-const AwaitScan = () => {
+const AwaitScan = ({ setIsLoading, }) => {
   useEffect(
     () => {
+      // initiate QR scanner handler
       const keyScanHandler = new keyscanner(qrValue => {
+
         console.log(qrValue);
+        setIsLoading(true);
+        window.db.collection('timecards').doc(qrValue).get()
+          .then(x => { console.log(x) });
       });
 
+      // remove handler when not awaiting scan
       return function cleanup() {
         keyScanHandler.stop()
       };

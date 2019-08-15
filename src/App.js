@@ -3,7 +3,7 @@ import firebase from 'firebase';
 
 import firebaseConfig from './config/firebase';
 
-import AwaitScan from './components/AwaitScan';
+import Timeclock from './components/Timeclock';
 import 'bulma/css/bulma.css';
 import './App.css';
 
@@ -18,7 +18,7 @@ const App = () => {
 
   return (
     <div className="App">
-        <AwaitScan />
+        <Timeclock />
     </div>
   );
 }
