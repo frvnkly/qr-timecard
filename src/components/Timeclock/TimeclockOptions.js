@@ -1,6 +1,19 @@
 import React from 'react';
 
-const TimeclockOptions = ({ employee }) => {
+const TimeclockOptions = ({ employee, setEmployee }) => {
+  const clockIn = () => {
+    employee.update({
+      timecard: [
+        ...employee.get('timecard'),
+        {
+          in: new Date(),
+          out: null,
+          time: null
+        }
+      ]
+    });
+  };
+
   return (
     <div className='hero is-fullheight'>
       <div className='hero-body'>
@@ -13,13 +26,14 @@ const TimeclockOptions = ({ employee }) => {
           </h2>
 
           <br />
+          <br />
 
           <button
             style={{ marginRight: '75px' }} 
             className='button is-medium is-success'
           >
-            <span class="icon">
-              <i class="fas fa-sign-in-alt"></i>
+            <span className="icon">
+              <i className="fas fa-sign-in-alt"></i>
             </span>
             <span>Clock in</span>
           </button>
@@ -27,10 +41,22 @@ const TimeclockOptions = ({ employee }) => {
             style={{ marginLeft: '75px' }}
             className='button is-medium is-danger'
           >
-            <span class="icon">
-              <i class="fas fa-sign-out-alt"></i>
+            <span className="icon">
+              <i className="fas fa-sign-out-alt"></i>
             </span>
             <span>Clock out</span>
+          </button>
+
+          <br />
+
+          <button
+            style={{ marginTop: '50px' }}
+            className='button is-medium is-link'
+          >
+            <span className="icon">
+              <i className="fas fa-history"></i>
+            </span>
+            <span>View timecards</span>
           </button>
         </div>
       </div>
@@ -38,12 +64,13 @@ const TimeclockOptions = ({ employee }) => {
         <div className='container'>
           <button
             style={{ marginBottom: '50px' }}
-            className='button is-medium is-link'
+            className='button is-medium is-warning'
+            onClick={() => { setEmployee(null) }}
           >
-            <span class="icon">
-              <i class="fas fa-history"></i>
+            <span className="icon">
+              <i className="fas fa-chevron-circle-left"></i>
             </span>
-            <span>View timecards</span>
+            <span>Back</span>
           </button>
         </div>
       </div>

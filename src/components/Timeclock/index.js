@@ -13,6 +13,7 @@ const TimeClock = () => {
   else if (employee) content = (
     <TimeclockOptions
       employee={employee}
+      setEmployee={setEmployee}
     />
   )
   else content = (
