@@ -5,6 +5,7 @@ import firebaseConfig from './config/firebase';
 
 import Timeclock from './components/Timeclock';
 import 'bulma/css/bulma.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import './App.css';
 
 const App = () => {

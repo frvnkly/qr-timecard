@@ -1,16 +1,23 @@
 import React, { useEffect } from 'react';
 import keyscanner from 'keyscanner';
 
-const AwaitScan = ({ setIsLoading, }) => {
+const AwaitScan = ({ setIsLoading, setEmployee }) => {
   useEffect(
     () => {
       // initiate QR scanner handler
-      const keyScanHandler = new keyscanner(qrValue => {
-
-        console.log(qrValue);
+      const keyScanHandler = new keyscanner(async qrValue => {
         setIsLoading(true);
-        window.db.collection('timecards').doc(qrValue).get()
-          .then(x => { console.log(x) });
+        const query = cleanScannerInput(qrValue);
+        const docRef = await window.db.collection('timecards').doc(query).get();
+
+        if (!docRef.exists) {
+          setIsLoading(false);
+          return;
+        }
+
+        setEmployee(docRef);
+        setIsLoading(false);
+        return;
       });
 
       // remove handler when not awaiting scan
@@ -19,6 +26,11 @@ const AwaitScan = ({ setIsLoading, }) => {
       };
     }
   );
+
+  const cleanScannerInput = val => {
+    const suffix = 'ArrowDown';
+    return val.substring(0, val.length - suffix.length);
+  };
 
   return (
     <section className='hero is-fullheight'>
