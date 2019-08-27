@@ -1,24 +1,26 @@
 import React from 'react';
 
-const TimeclockOptions = ({ employee, setEmployee }) => {
-  const clockIn = () => {
-    employee.update({
-      timecard: [
-        ...employee.get('timecard'),
-        {
-          in: new Date(),
-          out: null,
-          time: null
-        }
-      ]
+const TimeclockOptions = ({ employee, setEmployee, setLoading }) => {
+  const clockIn = async () => {
+    setLoading(true);
+
+    const recordCollection = window.db.collection('records');
+    await recordCollection.add({
+      employee: window.db.collection('employees').doc(employee.id),
+      in: new Date(),
+      out: null,
+      time: null,
     });
+
+    setEmployee(null);
+    setLoading(false);
   };
 
   return (
     <div className='hero is-fullheight'>
       <div className='hero-body'>
         <div className='container'>
-          <h1 class='title'>
+          <h1 className='title'>
             {`${employee.get('firstName')} ${employee.get('lastName')}`}
           </h1>
           <h2 className='subtitle'>
@@ -31,6 +33,7 @@ const TimeclockOptions = ({ employee, setEmployee }) => {
           <button
             style={{ marginRight: '75px' }} 
             className='button is-medium is-success'
+            onClick={clockIn}
           >
             <span className="icon">
               <i className="fas fa-sign-in-alt"></i>

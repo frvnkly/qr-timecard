@@ -14,6 +14,7 @@ const TimeClock = () => {
     <TimeclockOptions
       employee={employee}
       setEmployee={setEmployee}
+      setLoading={setIsLoading}
     />
   )
   else content = (

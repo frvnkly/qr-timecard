@@ -8,14 +8,14 @@ const AwaitScan = ({ setIsLoading, setEmployee }) => {
       const keyScanHandler = new keyscanner(async qrValue => {
         setIsLoading(true);
         const query = cleanScannerInput(qrValue);
-        const docRef = await window.db.collection('timecards').doc(query).get();
+        const doc = await window.db.collection('employees').doc(query).get();
 
-        if (!docRef.exists) {
+        if (!doc.exists) {
           setIsLoading(false);
           return;
         }
 
-        setEmployee(docRef);
+        setEmployee(doc);
         setIsLoading(false);
         return;
       });
