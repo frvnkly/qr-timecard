@@ -7,6 +7,7 @@ import LoadScreen from '../ui/LoadScreen';
 const TimeClock = () => {
   const [ isLoading, setIsLoading ] = useState(false);
   const [ employee, setEmployee ] = useState(null);
+  const [ feedback, setFeedback ] = null;
 
   let content;
   if (isLoading) content = <LoadScreen />

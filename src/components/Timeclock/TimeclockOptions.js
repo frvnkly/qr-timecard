@@ -4,13 +4,49 @@ const TimeclockOptions = ({ employee, setEmployee, setLoading }) => {
   const clockIn = async () => {
     setLoading(true);
 
+    const currentTime = new Date();
     const recordCollection = window.db.collection('records');
     await recordCollection.add({
       employee: window.db.collection('employees').doc(employee.id),
-      in: new Date(),
+      in: currentTime,
       out: null,
-      time: null,
+      createdAt: currentTime,
     });
+
+    setEmployee(null);
+    setLoading(false);
+  };
+
+  const clockOut  = async () => {
+    setLoading(true);
+
+    const recordCollection = window.db.collection('records');
+    const queryRes = await recordCollection
+      .where(
+        "employee",
+        "==",
+        window.db.collection('employees').doc(employee.id)
+      )
+      .orderBy('createdAt', 'desc')
+      .limit(1)
+      .get();
+
+    if (!queryRes.empty) {
+      const latestRecordId = queryRes.docs[0].id;
+      const latestRecord = queryRes.docs[0].data();          
+      if (!latestRecord.out) {
+        await recordCollection.doc(latestRecordId)
+          .update({ out: new Date() });
+      }
+    } else {
+      const currentTime = new Date();
+      await recordCollection.add({
+        employee: window.db.collection('employees').doc(employee.id),
+        in: null,
+        out: currentTime,
+        createdAt: currentTime,
+      });
+    }
 
     setEmployee(null);
     setLoading(false);
@@ -43,6 +79,7 @@ const TimeclockOptions = ({ employee, setEmployee, setLoading }) => {
           <button
             style={{ marginLeft: '75px' }}
             className='button is-medium is-danger'
+            onClick={clockOut}
           >
             <span className="icon">
               <i className="fas fa-sign-out-alt"></i>
