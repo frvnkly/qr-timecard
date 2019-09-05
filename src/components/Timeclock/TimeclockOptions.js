@@ -4,10 +4,9 @@ const TimeclockOptions = ({
     employee,
     setEmployee,
     setLoading,
-    setFeedback
+    setFeedback,
+    setRecords
   }) => {
-    const FEEDBACK_DURATION = 2000;
-
     const clockIn = async () => {
       setLoading(true);
 
@@ -19,7 +18,7 @@ const TimeclockOptions = ({
           employee: window.db.collection('employees').doc(employee.id),
           in: currentTime,
           out: null,
-          createdAt: currentTime,
+          timestamp: currentTime,
         });
       } catch (err) {
         success = false;
@@ -27,11 +26,7 @@ const TimeclockOptions = ({
 
       setEmployee(null);
       setLoading(false);
-      setFeedback({
-        type: success ? 'success' : 'error',
-        message: success ? 'Clocked in!' : 'Something went wrong.'
-      });
-      setTimeout(() => { setFeedback(null); }, FEEDBACK_DURATION);
+      showFeedback(success);
     };
 
     const clockOut  = async () => {
@@ -46,7 +41,7 @@ const TimeclockOptions = ({
             "==",
             window.db.collection('employees').doc(employee.id)
           )
-          .orderBy('createdAt', 'desc')
+          .orderBy('timestamp', 'desc')
           .limit(1)
           .get();
 
@@ -63,7 +58,7 @@ const TimeclockOptions = ({
             employee: window.db.collection('employees').doc(employee.id),
             in: null,
             out: currentTime,
-            createdAt: currentTime,
+            timestamp: currentTime,
           });
         }
       } catch (err) {
@@ -72,11 +67,53 @@ const TimeclockOptions = ({
 
       setEmployee(null);
       setLoading(false);
-      setFeedback({
-        type: success ? 'success' : 'error',
-        message: success ? 'Clocked out!' : 'Something went wrong.'
+      showFeedback(success);
+    };
+
+    const viewTimecards = async () => {
+      setLoading(true);
+
+      let queryRes;
+      try {
+        const recordCollection = window.db.collection('records');
+        queryRes = await recordCollection
+          .where(
+            'employee',
+            '==',
+            window.db.collection('employees').doc(employee.id)
+          )
+          .orderBy('timestamp')
+          .get();
+      } catch (err) {
+        setLoading(false);
+        showFeedback(false);
+        return;
+      }
+      
+      const records = new Map();
+      queryRes.docs.forEach(d => {
+        const r = d.data();
+        const timestamp = new Date(r.timestamp.seconds * 1000);
+        const month = timestamp.getMonth();
+        if (!records.has(month)) { records.set(month, []); }
+        records.get(month).push({
+          in: r.in ? r.in.seconds * 1000 : null,
+          out: r.out ? r.out.seconds * 1000 : null,
+        });
       });
-      setTimeout(() => { setFeedback(null); }, FEEDBACK_DURATION);
+      
+      setRecords(records);
+      setLoading(false);
+    };
+
+    const showFeedback = isSuccess => {
+      const feedbackDuration = 2000;
+      const feedback = isSuccess
+        ? { type: 'success', message: 'Clocked in!' }
+        : { type: 'error', message: 'Something went wrong.' };
+
+      setFeedback(feedback);
+      setInterval(() => { setFeedback(null); }, feedbackDuration);
     };
 
     return (
@@ -119,6 +156,7 @@ const TimeclockOptions = ({
             <button
               style={{ marginTop: '50px' }}
               className='button is-medium is-link'
+              onClick={viewTimecards}
             >
               <span className="icon">
                 <i className="fas fa-history"></i>
