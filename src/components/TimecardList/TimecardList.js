@@ -4,7 +4,13 @@ import Timecard from './Timecard';
 
 export default ({ records }) => {
   let content;
-  if (records.size === 0) { content = null }
+  if (records.size === 0) {
+    content = (
+      <div className='has-text-centered has-text-grey is-italic' style={{ paddingTop: '50px' }}>
+        There is nothing here.
+      </div>
+    );
+  }
   else {
     const recordsKeysArr = Array.from(records.keys());
     content = recordsKeysArr.map(k =>
@@ -12,5 +18,9 @@ export default ({ records }) => {
     );
   }
 
-  return content;
+  return (
+    <div className='container'>
+      {content}
+    </div>
+  );
 };

@@ -34,6 +34,17 @@ export default ({ month, cardRecords }) => {
     });
   };
 
+  const calculateTotal = () => {
+    const totalMilliseconds = cardRecords.reduce((acc, curr) => {
+      const millisecondsClocked = curr.in && curr.out
+        ? curr.out - curr.in
+        : 0;
+      return acc + millisecondsClocked;
+    }, 0);
+
+    return convertToHours(totalMilliseconds);
+  };
+
   const formatDateTime = dateTime => {
     if (!dateTime) return null;
 
@@ -68,6 +79,14 @@ export default ({ month, cardRecords }) => {
               <th>Clocked</th>
             </tr>
           </thead>
+
+          <tfoot>
+            <tr>
+              <th>Total clocked:</th>
+              <th></th>
+              <th>{calculateTotal()}</th>
+            </tr>
+          </tfoot>
 
           <tbody>
             {renderRows()}

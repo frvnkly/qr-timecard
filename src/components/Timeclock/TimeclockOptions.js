@@ -26,7 +26,10 @@ const TimeclockOptions = ({
 
       setEmployee(null);
       setLoading(false);
-      showFeedback(success);
+      showFeedback(
+        success,
+        success ? 'Clocked in!' : 'Something went wrong.'
+      );
     };
 
     const clockOut  = async () => {
@@ -45,13 +48,11 @@ const TimeclockOptions = ({
           .limit(1)
           .get();
 
-        if (!queryRes.empty) {
-          const latestRecordId = queryRes.docs[0].id;
-          const latestRecord = queryRes.docs[0].data();          
-          if (!latestRecord.out) {
-            await recordCollection.doc(latestRecordId)
-              .update({ out: new Date() });
-          }
+        if (!queryRes.empty && !queryRes.docs[0].data().out) {
+          const latestRecordId = queryRes.docs[0].id;          
+          await recordCollection
+            .doc(latestRecordId)
+            .update({ out: new Date() });
         } else {
           const currentTime = new Date();
           await recordCollection.add({
@@ -67,7 +68,10 @@ const TimeclockOptions = ({
 
       setEmployee(null);
       setLoading(false);
-      showFeedback(success);
+      showFeedback(
+        success,
+        success ? 'Clocked out!' : 'Something went wrong.'
+      );
     };
 
     const viewTimecards = async () => {
@@ -106,11 +110,11 @@ const TimeclockOptions = ({
       setLoading(false);
     };
 
-    const showFeedback = isSuccess => {
+    const showFeedback = (isSuccess, message=null) => {
       const feedbackDuration = 2000;
       const feedback = isSuccess
-        ? { type: 'success', message: 'Clocked in!' }
-        : { type: 'error', message: 'Something went wrong.' };
+        ? { type: 'success', message }
+        : { type: 'error', message };
 
       setFeedback(feedback);
       setInterval(() => { setFeedback(null); }, feedbackDuration);

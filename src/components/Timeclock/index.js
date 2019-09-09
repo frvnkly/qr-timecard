@@ -4,7 +4,7 @@ import AwaitScan from './AwaitScan';
 import TimeclockOptions from './TimeclockOptions';
 import LoadScreen from '../ui/LoadScreen';
 import Feedback from '../Timeclock/Feedback';
-import TimecardList from '../Timeclock/TimecardList';
+import EmployeeTimecards from '../Timeclock/EmployeeTimecards';
 
 const TimeClock = () => {
   const [ isLoading, setIsLoading ] = useState(false);
@@ -15,7 +15,13 @@ const TimeClock = () => {
   let content;
   if (isLoading) content = <LoadScreen />
   else if (feedback) content = <Feedback feedback={feedback} />
-  else if (records) content = <TimecardList records={records} />
+  else if (records) content = (
+    <EmployeeTimecards
+      setEmployee={setEmployee}
+      setRecords={setRecords}
+      records={records}
+    />
+  )
   else if (employee) content = (
     <TimeclockOptions
       employee={employee}

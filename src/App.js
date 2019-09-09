@@ -3,6 +3,7 @@ import firebase from 'firebase';
 
 import firebaseConfig from './config/firebase';
 
+import Navbar from './components/Navbar/Navbar';
 import Timeclock from './components/Timeclock';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -19,7 +20,8 @@ const App = () => {
 
   return (
     <div className="App">
-        <Timeclock />
+      <Navbar />
+      <Timeclock />
     </div>
   );
 }
