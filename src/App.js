@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { HashRouter, Switch, Route } from 'react-router-dom';
 import firebase from 'firebase';
 
 import firebaseConfig from './config/firebase';
@@ -19,10 +20,14 @@ const App = () => {
   );
 
   return (
-    <div className="App">
-      <Navbar />
-      <Timeclock />
-    </div>
+    <HashRouter>
+      <div className="App">
+        <Navbar />
+        <Switch>
+          <Route exact path='/' component={Timeclock} />
+        </Switch>
+      </div>
+    </HashRouter>
   );
 }
 
