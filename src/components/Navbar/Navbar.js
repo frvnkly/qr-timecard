@@ -1,18 +1,32 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
+
+import AdminContext from '../../context/AdminContext';
 
 const Navbar = () => {
+  const { admin } = useContext(AdminContext);
+
+  const menu = admin
+    ? <>
+        <Link className='navbar-item' to='/employee/add'>Add Employee</Link>
+        <Link className='navbar-item' to='/timecards'>Timecards</Link>
+        <Link className='navbar-item' to='/settings'>Settings</Link>
+        <Link className='navbar-item' to='/logout'>Logout</Link>
+      </>
+    : <>
+        <Link className='navbar-item' to='/login'>Login</Link>
+      </>;
+
   return (
     <nav className='navbar is-fixed-top'>
       <div className='navbar-menu'>
         <div className='navbar-end'>
-          <a className='navbar-item' href='#'>Timeclock</a>
-          <a className='navbar-item' href='#'>Add Employee</a>
-          <a className='navbar-item' href='#'>Timecards</a>
-          <a className='navbar-item' href='#'>Settings</a>
+          <Link className='navbar-item' to='/'>Timeclock</Link>
+          {menu}
         </div>
       </div>
     </nav>
-  )
+  );
 };
 
 export default Navbar;
