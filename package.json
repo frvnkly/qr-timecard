@@ -46,6 +46,7 @@
   },
   "main": "public/electron.js",
   "rescripts": [
-    "env"
+    "env",
+    ".rescriptsrc.js"
   ]
 }

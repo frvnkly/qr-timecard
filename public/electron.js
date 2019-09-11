@@ -10,6 +10,9 @@ const createWindow = () => {
   mainWindow = new BrowserWindow({ 
     width: 900,
     height: 680,
+    webPreferences: {
+      nodeIntegration: true
+    },
     fullscreen: true,
     title: 'Time and Attendance System',
   });

@@ -7,6 +7,7 @@ import firebaseConfig from './config/firebase';
 import AdminContext from './context/AdminContext';
 import Navbar from './components/Navbar/Navbar';
 import Timeclock from './components/Timeclock';
+import Login from './components/Login';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './App.css';
@@ -29,6 +30,7 @@ const App = () => {
           <Navbar />
           <Switch>
             <Route exact path='/' component={Timeclock} />
+            <Route path='/login' component={Login} />
           </Switch>
         </AdminContext.Provider>
       </div>
