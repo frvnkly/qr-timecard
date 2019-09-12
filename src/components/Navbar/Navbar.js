@@ -12,7 +12,7 @@ const Navbar = () => {
 
   const menu = admin
     ? <>
-        <Link className='navbar-item' to='/employee/add'>Add Employee</Link>
+        <Link className='navbar-item' to='/employees/add'>Add Employee</Link>
         <Link className='navbar-item' to='/timecards'>Timecards</Link>
         <Link className='navbar-item' to='/settings'>Settings</Link>
         <Link className='navbar-item' to='/logout' onClick={logoutHandler}>Logout</Link>
