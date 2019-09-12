@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { HashRouter, Switch, Route } from 'react-router-dom';
+import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 import firebase from 'firebase';
 
 import firebaseConfig from './config/firebase';
@@ -31,6 +31,7 @@ const App = () => {
           <Switch>
             <Route exact path='/' component={Timeclock} />
             <Route path='/login' component={Login} />
+            <Route path='/logout' render={() => <Redirect to='/' />} />
           </Switch>
         </AdminContext.Provider>
       </div>
